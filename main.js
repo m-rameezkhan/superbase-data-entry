@@ -50,7 +50,7 @@ if (submitBtn) {
         let getName = document.getElementById("name").value
         let getAge = document.getElementById("age").value
 
-        if(getName == '' && getAge == ''){
+        if(getName == '' || getAge == ''){
             document.getElementById('error').style.display = 'block'
             return
         }

@@ -11,7 +11,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-
+    flex-direction: column;
 }
 
 .container {
@@ -61,7 +61,6 @@ input[type="text"]:focus {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    /* transition: background 0.2s; */
 }
 
 .btn a {
@@ -88,8 +87,6 @@ input[type="text"]:focus {
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
-    /* 50% opacity */
-
 }
 
 .modal {
@@ -120,7 +117,7 @@ input[type="text"]:focus {
     cursor: pointer;
 }
 
-.icon>i {
+.icon > i {
     font-size: 20px;
 }
 
@@ -138,8 +135,37 @@ input[type="text"]:focus {
     width: 200px;
 }
 
-.error{
+.error {
     color: red;
     margin-bottom: 1.2rem;
     display: none;
+}
+
+footer {
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
+}
+
+footer p {
+    margin-bottom: 5px;
+}
+
+footer a {
+    margin: 0 8px;
+    color: #3182ce;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+footer a:hover {
+    color: #1d4ed8;
+}
+
+footer i {
+    margin-right: 4px;
 }
