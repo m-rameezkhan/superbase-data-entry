@@ -1,9 +1,15 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+let supabase;
+
+const initSupabase = async () => {
+  const response = await fetch('https://data-entry-server-vtjg.onrender.com/env');
+  const env = await response.json();
+
+  supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
+};
+initSupabase();
+
 
 let searchFlag = false
 let submitBtn = document.getElementById("submit")
