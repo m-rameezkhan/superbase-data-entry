@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Two Names Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <button class="btn" onclick="location.href='dashboard.html'">Go To Dashboard</button>
+        <h2>Data Entry</h2>
+        <form id="userForm" onsubmit="return false;">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter first name" autocomplete="given-name" required>
+
+            <label for="age">Age:</label>
+            <input type="text" id="age" name="age" placeholder="Enter second name" autocomplete="bday-year" required>
+            <p class="error" id="error">All fields are required. Please fill them out.</p>
+            <button type="button" class="btn" id="submit">Submit</button>
+        </form>
+    </div>
+    <div class="modal-container" id="modal-container" style="display: none;">
+        <div class="modal">
+            <button class="icon" onclick="closeModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 class="text-message">Submitted!</h2>
+            <img class="tick" src="Images/checked.png" alt="">
+        </div>
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html"><button class="btn-go-back btn">Go To Data Entry</button></a>
+        <h1>User Dashboard</h1>
+        <div class="add-user">
+            <input type="text" id="find-user-input" placeholder="Enter username to find" required>
+            <button type="button" id="find-user" onclick="findUser()">Find User</button>
+        </div>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
+
+
+    <script type="module" src="main.js"></script>
+</body>
