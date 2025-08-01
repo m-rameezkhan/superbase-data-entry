@@ -2,13 +2,23 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 let supabase;
 
-const initSupabase = async () => {
-  const response = await fetch('https://data-entry-server-vtjg.onrender.com/env');
-  const env = await response.json();
+// Fetch Supabase credentials from the backend
+const fetchSupabaseCredentials = async () => {
+    try {
+        const res = await fetch("https://data-entry-server-vtjg.onrender.com/env");
+        const data = await res.json();
 
-  supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
+        const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+        supabase = createClient(data.supabaseUrl, data.supabaseKey);
+
+        // Now you can call any supabase query
+        console.log("Supabase initialized:", supabase);
+    } catch (error) {
+        console.error("Failed to load Supabase credentials:", error);
+    }
 };
-initSupabase();
+
+fetchSupabaseCredentials();
 
 
 let searchFlag = false
@@ -154,7 +164,7 @@ const deleteUser = async (id) => {
 }
 window.deleteUser = deleteUser
 
-const confrimUpdate = async(id) => {
+const confrimUpdate = async (id) => {
     document.getElementById('update-modal').style.display = 'flex';
 
     const updateBtn = document.getElementById('btn-update-user');
@@ -164,12 +174,12 @@ const confrimUpdate = async(id) => {
     updateBtn.parentNode.replaceChild(newUpdateBtn, updateBtn);
 
     const { data, error } = await supabase
-            .from('Users')
-            .select('*')
-            .eq('id', id)
-            .single();
-            document.getElementById('updated-name').value = data.Name
-            document.getElementById('updated-age').value = data.Age
+        .from('Users')
+        .select('*')
+        .eq('id', id)
+        .single();
+    document.getElementById('updated-name').value = data.Name
+    document.getElementById('updated-age').value = data.Age
 
     newUpdateBtn.addEventListener('click', async () => {
 
