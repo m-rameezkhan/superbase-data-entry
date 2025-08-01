@@ -1,8 +1,9 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
 
-const supabaseUrl = 'https://nawcxbkiotamvvnlcobh.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hd2N4Ymtpb3RhbXZ2bmxjb2JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM3ODA3NjEsImV4cCI6MjA2OTM1Njc2MX0.n_yOwkh6wgV3cEqqy9OlJ3D48zrJTQUGuVY_Ntz34UE'
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
 
 let searchFlag = false
 let submitBtn = document.getElementById("submit")
