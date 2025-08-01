@@ -4,16 +4,19 @@ const supabaseUrl = 'https://nawcxbkiotamvvnlcobh.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hd2N4Ymtpb3RhbXZ2bmxjb2JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM3ODA3NjEsImV4cCI6MjA2OTM1Njc2MX0.n_yOwkh6wgV3cEqqy9OlJ3D48zrJTQUGuVY_Ntz34UE'
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-
+let searchFlag = false
 let submitBtn = document.getElementById("submit")
 
 const findUser = async (event) => {
-    // event.preventDefault()
-    let findUserInput = document.getElementById("find-user-input").value
-    if (findUserInput == ''){
-        renderTable()
+    let findUser = document.getElementById("find-user-input")
+    let findUserInput = findUser.value
+
+    if (findUserInput == '') {
+        findUser.style.border = '1px solid red'
         return
     }
+    findUser.style.border = 'none'
+    searchFlag = true
     let tableBody = document.getElementById('tableBody')
     if (tableBody) {
         tableBody.innerHTML = ''
@@ -21,8 +24,8 @@ const findUser = async (event) => {
             .from('Users')
             .select('*')
             .eq('Name', findUserInput)
-        
-        if(data == ''){
+
+        if (data == '') {
             tableBody.innerHTML += `<h2>No User Found</h2>`
         }
 
@@ -35,8 +38,8 @@ const findUser = async (event) => {
                     <td>${user.Name}</td>
                     <td>${user.Age}</td>
                     <td>
-                        <button type="button" class="btn btn-update" onclick="updateUser('${user.id}')">Update</button>
-                        <button type="button" class="btn btn-delete" onclick="deleteUser('${user.id}')">Delete</button>
+                        <button type="button" class="btn btn-update" onclick="confrimUpdate('${user.id}')">Update</button>
+                        <button type="button" class="btn btn-delete" onclick="confirmDelete('${user.id}')">Delete</button>
                     </td>
                 </tr>`
         })
@@ -50,11 +53,11 @@ if (submitBtn) {
         let getName = document.getElementById("name").value
         let getAge = document.getElementById("age").value
 
-        if(getName == '' || getAge == ''){
+        if (getName == '' || getAge == '') {
             document.getElementById('error').style.display = 'block'
             return
         }
-        else{
+        else {
             document.getElementById('error').style.display = 'none'
         }
 
@@ -94,27 +97,91 @@ const renderTable = async () => {
                     <td>${user.Name}</td>
                     <td>${user.Age}</td>
                     <td>
-                        <button type="button" class="btn btn-update" onclick="updateUser('${user.id}')">Update</button>
-                        <button type="button" class="btn btn-delete" onclick="deleteUser('${user.id}')">Delete</button>
+                        <button type="button" class="btn btn-update" onclick="confrimUpdate('${user.id}')">Update</button>
+                        <button type="button" class="btn btn-delete" onclick="confirmDelete('${user.id}')">Delete</button>
                     </td>
                 </tr>`
         })
     }
 }
+window.renderTable = renderTable
 renderTable()
+
+let clearBtn = document.getElementById('clear-user')
+if (clearBtn) {
+    clearBtn.addEventListener('click', async () => {
+        if (searchFlag == true) {
+            let getInput = document.getElementById("find-user-input")
+            getInput.value = ''
+            searchFlag = false
+            renderTable()
+        }
+        else {
+            let getInput = document.getElementById("find-user-input")
+            getInput.value = ''
+        }
+    })
+}
+const confirmDelete = (id) => {
+    document.getElementById("modal-container").style.display = 'flex';
+
+    const confirmBtn = document.getElementById('confrim-delete');
+
+    const newConfirmBtn = confirmBtn.cloneNode(true); // remove previous listeners
+    confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+    newConfirmBtn.addEventListener('click', async () => {
+        await deleteUser(id);
+        document.getElementById("modal-container").style.display = 'none';
+    });
+};
+window.confirmDelete = confirmDelete
 
 const deleteUser = async (id) => {
     const { error } = await supabase
         .from('Users')
         .delete()
         .eq('id', id)
+    document.getElementById("modal-container").style.display = 'none';
     renderTable()
 }
 window.deleteUser = deleteUser
 
-const updateUser = async (id) => {
-    let N = prompt("Enter Your Updated Name")
-    let A = prompt("Enter Your Updated Age")
+const confrimUpdate = async(id) => {
+    document.getElementById('update-modal').style.display = 'flex';
+
+    const updateBtn = document.getElementById('btn-update-user');
+
+    // Get clean copy of the button to remove any previous event listeners
+    const newUpdateBtn = updateBtn.cloneNode(true);
+    updateBtn.parentNode.replaceChild(newUpdateBtn, updateBtn);
+
+    const { data, error } = await supabase
+            .from('Users')
+            .select('*')
+            .eq('id', id)
+            .single();
+            document.getElementById('updated-name').value = data.Name
+            document.getElementById('updated-age').value = data.Age
+
+    newUpdateBtn.addEventListener('click', async () => {
+
+        const N = document.getElementById('updated-name').value.trim();
+        const A = document.getElementById('updated-age').value.trim();
+
+        if (N === '' || A === '') {
+            alert("Please enter both name and age.");
+            return;
+        }
+
+        await updateUser(id, N, A);
+        document.getElementById('update-modal').style.display = 'none';
+    });
+}
+window.confrimUpdate = confrimUpdate;
+
+
+const updateUser = async (id, N, A) => {
     const { error } = await supabase
         .from('Users')
         .update({ Name: N, Age: A })
@@ -122,3 +189,8 @@ const updateUser = async (id) => {
     renderTable()
 }
 window.updateUser = updateUser
+
+const closeUpdateModal = () => {
+    document.getElementById('update-modal').style.display = 'none'
+}
+window.closeUpdateModal = closeUpdateModal

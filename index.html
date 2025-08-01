@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
     <div class="container">
         <button class="btn" onclick="location.href='dashboard.html'">Go To Dashboard</button>
         <h2>Data Entry</h2>
-        <form id="userForm" onsubmit="return false;">
+        <div id="userForm" onsubmit="return false;">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" placeholder="Enter first name" autocomplete="given-name" required>
 
@@ -23,7 +24,7 @@
             <input type="text" id="age" name="age" placeholder="Enter second name" autocomplete="bday-year" required>
             <p class="error" id="error">All fields are required. Please fill them out.</p>
             <button type="button" class="btn" id="submit">Submit</button>
-        </form>
+        </div>
     </div>
     <div class="modal-container" id="modal-container" style="display: none;">
         <div class="modal">
