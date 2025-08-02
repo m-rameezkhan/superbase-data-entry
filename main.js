@@ -1,8 +1,5 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-
 let supabase;
 
-// Fetch Supabase credentials from the backend
 const fetchSupabaseCredentials = async () => {
     try {
         const res = await fetch("https://data-entry-server-vtjg.onrender.com/env");
@@ -11,14 +8,18 @@ const fetchSupabaseCredentials = async () => {
         const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
         supabase = createClient(data.supabaseUrl, data.supabaseKey);
 
-        // Now you can call any supabase query
         console.log("Supabase initialized:", supabase);
+
+        //  Render the table only after supabase is initialized
+        renderTable();
+
     } catch (error) {
         console.error("Failed to load Supabase credentials:", error);
     }
 };
 
 fetchSupabaseCredentials();
+
 
 
 let searchFlag = false
@@ -122,7 +123,6 @@ const renderTable = async () => {
     }
 }
 window.renderTable = renderTable
-renderTable()
 
 let clearBtn = document.getElementById('clear-user')
 if (clearBtn) {
